@@ -9,7 +9,7 @@ using URLShortenerBackend.Data;
 
 namespace URLShortenerBackend.Migrations
 {
-    [DbContext(typeof(UrlShortenerDbContext))]
+    [DbContext(typeof(UrlShortenerDbContextt))]
     partial class UrlShortenerDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
