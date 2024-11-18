@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using URLShortenerBackend.Data;
 
@@ -10,9 +11,11 @@ using URLShortenerBackend.Data;
 namespace URLShortenerBackend.Migrations
 {
     [DbContext(typeof(UrlShortenerDbContext))]
-    partial class UrlShortenerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241118115319_AddExpiresAt")]
+    partial class AddExpiresAt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
@@ -39,7 +42,7 @@ namespace URLShortenerBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ShortUrls", (string)null);
+                    b.ToTable("ShortUrls");
                 });
 #pragma warning restore 612, 618
         }
