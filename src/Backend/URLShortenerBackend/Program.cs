@@ -5,6 +5,7 @@ using URLShortenerBackend.Services;
 
 
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -23,6 +24,8 @@ builder.Services.AddScoped<UrlShortenerService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddMemoryCache();
+
 // Build the application
 var app = builder.Build();
 
