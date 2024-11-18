@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.10" />
+<<<<<<< HEAD
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -17,6 +18,14 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+=======
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.0.0" />
+>>>>>>> a830b6520998f69c7a12d42fb0cc754e0b722754
   </ItemGroup>
 
 </Project>

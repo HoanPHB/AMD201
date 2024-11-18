@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using URLShortenerBackend.Services;
 
 namespace URLShortenerBackend.Controllers
 {
@@ -6,26 +7,59 @@ namespace URLShortenerBackend.Controllers
     [Route("[controller]")]
     public class UrlController : ControllerBase
     {
+        public class ShortenUrlRequest
+        {
+            public string OriginalUrl { get; set; }
+            public DateTime? ExpiresAt { get; set; } // Optional expiration date
+        }
+
+        private readonly UrlShortenerService _urlShortenerService;
+
+        public UrlController(UrlShortenerService urlShortenerService)
+        {
+            _urlShortenerService = urlShortenerService;
+        }
+
         // POST /shorten
         [HttpPost("shorten")]
-        public IActionResult ShortenUrl([FromBody] UrlRequest request)
+        public async Task<IActionResult> ShortenUrl([FromBody] ShortenUrlRequest request)
         {
-            // Skeleton response, no actual logic yet
-            return Ok(new { ShortUrl = "https://short.ly/example" });
+            try
+            {
+                if (string.IsNullOrEmpty(request.OriginalUrl))
+                {
+                    return BadRequest(new { error = "Original URL cannot be empty." });
+                }
+
+                // Pass both the original URL and the optional expiration date
+                var shortCode = await _urlShortenerService.CreateShortUrlAsync(request.OriginalUrl, request.ExpiresAt);
+                var shortUrl = $"{Request.Scheme}://{Request.Host}/url/{shortCode}";
+
+                return Ok(shortUrl);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
         }
 
         // GET /{code}
         [HttpGet("{code}")]
-        public IActionResult RedirectToOriginalUrl(string code)
+        public async Task<IActionResult> RedirectToOriginalUrl(string code)
         {
-            // Skeleton response, no actual logic yet
-            return Redirect("https://original-url-example.com");
+            try
+            {
+                var originalUrl = await _urlShortenerService.GetOriginalUrlAsync(code);
+                return Redirect(originalUrl);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "The shortened URL has expired.")
+                {
+                    return BadRequest(new { error = "This URL has expired. Please create a new one." });
+                }
+                return NotFound(new { error = ex.Message });
+            }
         }
-    }
-
-    // This is a model for the URL request data (assumes an input JSON object with a single `url` property)
-    public class UrlRequest
-    {
-        public string Url { get; set; }
     }
 }
