@@ -10,7 +10,7 @@ using URLShortenerBackend.Data;
 
 namespace URLShortenerBackend.Migrations
 {
-    [DbContext(typeof(UrlShortenerDbContext))]
+    [DbContext(typeof(UrlShortenerDbContextt))]
     [Migration("20241118115319_AddExpiresAt")]
     partial class AddExpiresAt
     {

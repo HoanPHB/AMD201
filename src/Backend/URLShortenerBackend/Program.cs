@@ -10,6 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 //builder.Services.AddDbContext<UrlShortenerDbContext>(options =>
 //    options.UseSqlite("Data Source=UrlShortener.db")); // SQLite database file
+builder.Services.AddDbContext<UrlShortenerDbContext>(options =>
+{
+    options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 builder.Services.AddEntityFrameworkMySQL()
     .AddDbContext<DbContext>(options =>
     {
