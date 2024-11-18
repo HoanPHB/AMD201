@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using URLShortenerBackend.Services;
 
 namespace URLShortenerBackend.Controllers
 {
@@ -6,26 +7,46 @@ namespace URLShortenerBackend.Controllers
     [Route("[controller]")]
     public class UrlController : ControllerBase
     {
+        private readonly UrlShortenerService _urlShortenerService;
+
+        public UrlController(UrlShortenerService urlShortenerService)
+        {
+            _urlShortenerService = urlShortenerService;
+        }
+
         // POST /shorten
         [HttpPost("shorten")]
-        public IActionResult ShortenUrl([FromBody] UrlRequest request)
+        public async Task<IActionResult> ShortenUrl([FromBody] string originalUrl)
         {
-            // Skeleton response, no actual logic yet
-            return Ok(new { ShortUrl = "https://short.ly/example" });
+            try
+            {
+                var shortCode = await _urlShortenerService.CreateShortUrlAsync(originalUrl);
+                var shortUrl = $"{Request.Scheme}://{Request.Host}/{shortCode}";
+                return Ok(shortUrl);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
         }
 
-        // GET /{code}
         [HttpGet("{code}")]
-        public IActionResult RedirectToOriginalUrl(string code)
+        public async Task<IActionResult> RedirectToOriginalUrl(string code)
         {
-            // Skeleton response, no actual logic yet
-            return Redirect("https://original-url-example.com");
-        }
-    }
+            try
+            {
+                Console.WriteLine($"Received request to redirect for code: {code}");
 
-    // This is a model for the URL request data (assumes an input JSON object with a single `url` property)
-    public class UrlRequest
-    {
-        public string Url { get; set; }
+                var originalUrl = await _urlShortenerService.GetOriginalUrlAsync(code);
+                Console.WriteLine($"Redirecting to: {originalUrl}");
+
+                return Redirect(originalUrl); // Redirect to the original URL
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error during redirection: {ex.Message}");
+                return NotFound(new { error = ex.Message });
+            }
+        }
     }
 }
