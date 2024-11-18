@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using URLShortenerBackend.Data;
 using URLShortenerBackend.Models;
 using Microsoft.Extensions.Logging;
+using URLShortenerBackend.Migrations;
 
 namespace URLShortenerBackend.Services
 {
@@ -20,7 +21,7 @@ namespace URLShortenerBackend.Services
         }
 
         // Method to create a short URL
-        public async Task<string> CreateShortUrlAsync(string originalUrl)
+        public async Task<string> CreateShortUrlAsync(string originalUrl, DateTime? expiresAt = null)
         {
             // Validate input URL
             if (string.IsNullOrEmpty(originalUrl) || !Uri.IsWellFormedUriString(originalUrl, UriKind.Absolute))
@@ -43,11 +44,14 @@ namespace URLShortenerBackend.Services
             {
                 OriginalUrl = originalUrl,
                 ShortCode = shortCode,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                ExpiresAt = expiresAt
             };
 
             _dbContext.ShortUrls.Add(shortUrl);
             await _dbContext.SaveChangesAsync();
+
+            _logger.LogInformation("Created new short URL with expiration date: {ExpiresAt}", expiresAt);
 
             return shortCode;
         }

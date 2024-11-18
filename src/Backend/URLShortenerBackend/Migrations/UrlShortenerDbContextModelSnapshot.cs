@@ -39,7 +39,7 @@ namespace URLShortenerBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ShortUrls");
+                    b.ToTable("ShortUrls", (string)null);
                 });
 #pragma warning restore 612, 618
         }

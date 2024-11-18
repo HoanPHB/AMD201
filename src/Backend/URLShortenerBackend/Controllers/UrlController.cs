@@ -7,6 +7,12 @@ namespace URLShortenerBackend.Controllers
     [Route("[controller]")]
     public class UrlController : ControllerBase
     {
+        public class ShortenUrlRequest
+        {
+            public string OriginalUrl { get; set; }
+            public DateTime? ExpiresAt { get; set; } // Optional expiration date
+        }
+
         private readonly UrlShortenerService _urlShortenerService;
 
         public UrlController(UrlShortenerService urlShortenerService)
@@ -16,12 +22,19 @@ namespace URLShortenerBackend.Controllers
 
         // POST /shorten
         [HttpPost("shorten")]
-        public async Task<IActionResult> ShortenUrl([FromBody] string originalUrl)
+        public async Task<IActionResult> ShortenUrl([FromBody] ShortenUrlRequest request)
         {
             try
             {
-                var shortCode = await _urlShortenerService.CreateShortUrlAsync(originalUrl);
-                var shortUrl = $"{Request.Scheme}://{Request.Host}/{shortCode}";
+                if (string.IsNullOrEmpty(request.OriginalUrl))
+                {
+                    return BadRequest(new { error = "Original URL cannot be empty." });
+                }
+
+                // Pass both the original URL and the optional expiration date
+                var shortCode = await _urlShortenerService.CreateShortUrlAsync(request.OriginalUrl, request.ExpiresAt);
+                var shortUrl = $"{Request.Scheme}://{Request.Host}/url/{shortCode}";
+
                 return Ok(shortUrl);
             }
             catch (Exception ex)
@@ -30,6 +43,7 @@ namespace URLShortenerBackend.Controllers
             }
         }
 
+        // GET /{code}
         [HttpGet("{code}")]
         public async Task<IActionResult> RedirectToOriginalUrl(string code)
         {
