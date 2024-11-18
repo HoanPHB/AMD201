@@ -6,5 +6,9 @@ namespace URLShortenerBackend.Models
         public string OriginalUrl { get; set; }
         public string ShortCode { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public DateTime? ExpiresAt { get; set; }
+
+
     }
 }
