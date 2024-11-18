@@ -49,16 +49,15 @@ namespace URLShortenerBackend.Controllers
         {
             try
             {
-                Console.WriteLine($"Received request to redirect for code: {code}");
-
                 var originalUrl = await _urlShortenerService.GetOriginalUrlAsync(code);
-                Console.WriteLine($"Redirecting to: {originalUrl}");
-
-                return Redirect(originalUrl); // Redirect to the original URL
+                return Redirect(originalUrl);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error during redirection: {ex.Message}");
+                if (ex.Message == "The shortened URL has expired.")
+                {
+                    return BadRequest(new { error = "This URL has expired. Please create a new one." });
+                }
                 return NotFound(new { error = ex.Message });
             }
         }
