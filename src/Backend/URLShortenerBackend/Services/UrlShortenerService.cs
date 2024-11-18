@@ -39,19 +39,23 @@ namespace URLShortenerBackend.Services
             // Generate a unique short code
             var shortCode = GenerateShortCode();
 
+            // Set expiration time to 1 day from now
+            var createdAt = DateTime.UtcNow;
+            var calculatedExpiresAt = createdAt.AddDays(1);
+
             // Save to the database
             var shortUrl = new ShortUrl
             {
                 OriginalUrl = originalUrl,
                 ShortCode = shortCode,
                 CreatedAt = DateTime.UtcNow,
-                ExpiresAt = expiresAt
+                ExpiresAt = calculatedExpiresAt
             };
 
             _dbContext.ShortUrls.Add(shortUrl);
             await _dbContext.SaveChangesAsync();
 
-            _logger.LogInformation("Created new short URL with expiration date: {ExpiresAt}", expiresAt);
+            _logger.LogInformation("Created new short URL with expiration date: {ExpiresAt}", calculatedExpiresAt);
 
             return shortCode;
         }
