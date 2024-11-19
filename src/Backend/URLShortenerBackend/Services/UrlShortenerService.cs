@@ -128,6 +128,9 @@ namespace URLShortenerBackend.Services
                 cacheOptions.SetAbsoluteExpiration(TimeSpan.FromDays(1));
             }
 
+            // Specify the size of the cache entry (e.g., 1 unit per entry)
+            cacheOptions.SetSize(1);
+
             // Add to cache
             _memoryCache.Set(shortCode, new CachedUrl
             {

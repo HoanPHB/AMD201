@@ -24,7 +24,11 @@ builder.Services.AddScoped<UrlShortenerService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddMemoryCache();
+builder.Services.AddMemoryCache(options =>
+{
+    options.SizeLimit = 1024; // Size limit in units (can be adjusted)
+});
+
 
 // Build the application
 var app = builder.Build();
