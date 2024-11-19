@@ -31,15 +31,6 @@ namespace URLShortenerBackend.Services
                 throw new ArgumentException("Invalid URL");
             }
 
-            // Check if the URL already exists
-            var existing = await _dbContext.ShortUrls.FirstOrDefaultAsync(u => u.OriginalUrl == originalUrl);
-            if (existing != null)
-            {
-                // Cache the existing mapping
-                CacheUrl(existing.ShortCode, existing.OriginalUrl, existing.ExpiresAt);
-                return existing.ShortCode; // Return the existing short code
-            }
-
             // Generate a unique short code
             var shortCode = GenerateShortCode();
 
@@ -53,7 +44,9 @@ namespace URLShortenerBackend.Services
                 OriginalUrl = originalUrl,
                 ShortCode = shortCode,
                 CreatedAt = createdAt,
-                ExpiresAt = calculatedExpiresAt
+                ExpiresAt = calculatedExpiresAt,
+                ClickCount = 0,
+                LastClickedAt = null
             };
 
             _dbContext.ShortUrls.Add(shortUrl);
@@ -83,6 +76,9 @@ namespace URLShortenerBackend.Services
                     throw new Exception("The shortened URL has expired.");
                 }
 
+                // Update analytics in the database
+                await IncrementClickAnalytics(shortCode);
+
                 _logger.LogInformation("Cache hit for short code: {ShortCode}", shortCode);
                 return cachedUrl.OriginalUrl;
             }
@@ -90,26 +86,62 @@ namespace URLShortenerBackend.Services
             _logger.LogInformation("Cache miss for short code: {ShortCode}", shortCode);
 
             // If not in cache, query the database
-            var shortUrl = await _dbContext.ShortUrls.FirstOrDefaultAsync(u => u.ShortCode == shortCode);
+            var dbShortUrl = await _dbContext.ShortUrls.FirstOrDefaultAsync(u => u.ShortCode == shortCode);
 
-            if (shortUrl == null)
+            if (dbShortUrl == null)
             {
                 _logger.LogWarning("Short URL with code {ShortCode} not found", shortCode);
                 throw new Exception("Short URL not found");
             }
 
             // Check expiration
-            if (shortUrl.ExpiresAt.HasValue && shortUrl.ExpiresAt.Value < DateTime.UtcNow)
+            if (dbShortUrl.ExpiresAt.HasValue && dbShortUrl.ExpiresAt.Value < DateTime.UtcNow)
             {
                 _logger.LogWarning("Short URL with code {ShortCode} has expired", shortCode);
                 throw new Exception("The shortened URL has expired.");
             }
 
-            // Cache the retrieved URL
-            CacheUrl(shortCode, shortUrl.OriginalUrl, shortUrl.ExpiresAt);
+            // Update analytics
+            await IncrementClickAnalytics(shortCode);
 
-            _logger.LogInformation("Redirecting to original URL: {OriginalUrl}", shortUrl.OriginalUrl);
-            return shortUrl.OriginalUrl;
+            // Cache the retrieved URL
+            CacheUrl(shortCode, dbShortUrl.OriginalUrl, dbShortUrl.ExpiresAt);
+
+            _logger.LogInformation("Redirecting to original URL: {OriginalUrl}", dbShortUrl.OriginalUrl);
+            return dbShortUrl.OriginalUrl;
+        }
+
+        // Method to get analytics for a short code
+        public async Task<object> GetAnalyticsAsync(string shortCode)
+        {
+            var shortUrl = await _dbContext.ShortUrls.FirstOrDefaultAsync(u => u.ShortCode == shortCode);
+
+            if (shortUrl == null)
+            {
+                return null;
+            }
+
+            return new
+            {
+                OriginalUrl = shortUrl.OriginalUrl,
+                ShortCode = shortUrl.ShortCode,
+                CreatedAt = shortUrl.CreatedAt,
+                ExpiresAt = shortUrl.ExpiresAt,
+                ClickCount = shortUrl.ClickCount,
+                LastClickedAt = shortUrl.LastClickedAt
+            };
+        }
+
+        // Utility to increment click analytics
+        private async Task IncrementClickAnalytics(string shortCode)
+        {
+            var shortUrl = await _dbContext.ShortUrls.FirstOrDefaultAsync(u => u.ShortCode == shortCode);
+            if (shortUrl != null)
+            {
+                shortUrl.ClickCount++;
+                shortUrl.LastClickedAt = DateTime.UtcNow;
+                await _dbContext.SaveChangesAsync();
+            }
         }
 
         // Utility to cache a URL
@@ -146,8 +178,16 @@ namespace URLShortenerBackend.Services
         {
             const string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             var random = new Random();
-            return new string(Enumerable.Repeat(characters, 6)
-                .Select(s => s[random.Next(s.Length)]).ToArray());
+
+            string shortCode;
+            do
+            {
+                shortCode = new string(Enumerable.Repeat(characters, 6)
+                    .Select(s => s[random.Next(s.Length)]).ToArray());
+            }
+            while (_dbContext.ShortUrls.Any(u => u.ShortCode == shortCode)); // Check for uniqueness in the database
+
+            return shortCode;
         }
 
         // Nested class for caching
