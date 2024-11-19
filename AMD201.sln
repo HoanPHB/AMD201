@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8E618134-4AC0-443F-B250-A55ABE3A9A0A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F84670B8-35BF-4098-9C39-E633D94ACA36}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{16FE15C6-2C25-4F45-9885-26387189E225}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{616D27B2-F980-4722-81DC-D3A03E0ADE18}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "URLShortenerBackend", "src\Backend\URLShortenerBackend\URLShortenerBackend.csproj", "{C2C99505-98F5-4B7E-AC7A-B754C44EE63C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "URLShortenerBackend", "src\Backend\URLShortenerBackend\URLShortenerBackend.csproj", "{5F63D01B-EEE1-4925-B381-CFC0CC132ECF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,19 +15,19 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C2C99505-98F5-4B7E-AC7A-B754C44EE63C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C2C99505-98F5-4B7E-AC7A-B754C44EE63C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C2C99505-98F5-4B7E-AC7A-B754C44EE63C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C2C99505-98F5-4B7E-AC7A-B754C44EE63C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F63D01B-EEE1-4925-B381-CFC0CC132ECF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F63D01B-EEE1-4925-B381-CFC0CC132ECF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F63D01B-EEE1-4925-B381-CFC0CC132ECF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F63D01B-EEE1-4925-B381-CFC0CC132ECF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{16FE15C6-2C25-4F45-9885-26387189E225} = {8E618134-4AC0-443F-B250-A55ABE3A9A0A}
-		{C2C99505-98F5-4B7E-AC7A-B754C44EE63C} = {16FE15C6-2C25-4F45-9885-26387189E225}
+		{616D27B2-F980-4722-81DC-D3A03E0ADE18} = {F84670B8-35BF-4098-9C39-E633D94ACA36}
+		{5F63D01B-EEE1-4925-B381-CFC0CC132ECF} = {616D27B2-F980-4722-81DC-D3A03E0ADE18}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {7F7A72CB-05C7-4E05-A7D0-5FF793B3EAA4}
+		SolutionGuid = {8494B857-86BB-4AFB-871C-19980969431E}
 	EndGlobalSection
 EndGlobal
