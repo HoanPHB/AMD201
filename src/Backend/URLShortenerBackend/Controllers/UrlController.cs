@@ -61,5 +61,26 @@ namespace URLShortenerBackend.Controllers
                 return NotFound(new { error = ex.Message });
             }
         }
+
+        // GET /analytics/{code}
+        [HttpGet("analytics/{code}")]
+        public async Task<IActionResult> GetAnalytics(string code)
+        {
+            try
+            {
+                var analytics = await _urlShortenerService.GetAnalyticsAsync(code);
+
+                if (analytics == null)
+                {
+                    return NotFound(new { error = "No analytics found for the given short code." });
+                }
+
+                return Ok(analytics);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
     }
 }
