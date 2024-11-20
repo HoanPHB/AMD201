@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SHORT. - URL Shortener</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <header class="header">
+    <h1 class="subtitle">SHORT.</h1>
+    <p class="headline">Shorten Your loooooonggg links and vice versa</p>
+  </header>
+
+  <main class="main-content">
+    <div class="centered-input">
+      <p class="service-description">
+        SHORT. is an efficient and easy-to-use URL shortening and expanding service that streamlines your online experience.
+      </p>
+
+      <!-- Shorten URL Section -->
+      <div class="input-section">
+        <input type="text" id="urlInput" class="input-field" placeholder="Enter the link you want to shorten here">
+        <button id="shortenBtn" class="action-btn">Shorten Now!</button>
+      </div>
+
+      <div class="result-section" id="resultSection">
+        <input type="text" id="shortenedLink" class="input-field" value="Your short Url will show here" readonly>
+        <button id="copyBtn" class="action-btn copy-btn" disabled>COPY</button>
+      </div>
+
+      <!-- Retrieve URL Section -->
+      <div class="input-section">
+        <input type="text" id="retrieveInput" class="input-field" placeholder="Enter the short URL here">
+        <button id="retrieveBtn" class="action-btn">Retrieve Now!</button>
+      </div>
+
+      <div class="result-section" id="retrieveResultSection">
+        <input type="text" id="originalLink" class="input-field" value="The original URL will show here" readonly>
+        <button id="copyRetrieveBtn" class="action-btn copy-btn" disabled>COPY</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="footer">
+    <div class="contact-section">
+      <a href="contact.html" id="contactBtn" class="contact-btn">Contact Us</a>
+      <p class="footer-text">CONTACT US if you cannot shorten your URL or for other issues.</p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

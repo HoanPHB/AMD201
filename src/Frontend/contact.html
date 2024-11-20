@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SHORT. - URL Shortener</title>
+  <style>
+    /* General Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000; /* Black background */
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Header Styles */
+    .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 20px 0;
+        z-index: 1000;
+    }
+
+    .subtitle {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: 2.2em;
+        background: linear-gradient(to right, pink, blue);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+    }
+
+
+
+    .back-to-main {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #3498db;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .back-to-main:hover {
+      background-color: #2176ab;
+    }
+
+    /* Main Content */
+    .main-content {
+      padding: 50px 20px;
+      text-align: center;
+    }
+
+    .team-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+    }
+
+    .team-list {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .team-card {
+      background-color: #1e1e1e;
+      border-radius: 8px;
+      padding: 20px;
+      width: 250px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+    }
+
+    .team-card:hover {
+      transform: scale(1.05);
+    }
+
+    .team-card h3 {
+      font-size: 1.5rem;
+      color: #3498db;
+      margin-bottom: 10px;
+    }
+
+    .team-card p {
+      font-size: 1rem;
+      color: #ccc;
+      margin: 0;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background-color: #1e1e1e;
+      padding: 30px;
+      border-radius: 10px;
+      width: 400px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.8);
+    }
+
+    .modal-content h3 {
+      margin-bottom: 10px;
+      color: #3498db;
+    }
+
+    .modal-content p {
+      margin-bottom: 10px;
+      font-size: 1rem;
+    }
+
+    .close-btn {
+      margin-top: 20px;
+      background-color: #3498db;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .close-btn:hover {
+      background-color: #2176ab;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <h1 class="subtitle">SHORT.</h1>
+    <a href="index.html" class="back-to-main">Back to Main</a>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="team-section">
+      <h2>Our Team</h2>
+      <div class="team-list">
+        <div class="team-card" onclick="showModal('DR. BAO HOAN', 'CEO', 'BAOHUAN@short.com', '+1 234 567 890')">
+          <h3>DR. BAO HOAN</h3>
+          <p>CEO</p>
+        </div>
+        <div class="team-card" onclick="showModal('XUAN HIEN', 'Customer Support', 'XHIEN@short.com', '+1 234 567 891')">
+          <h3>XUAN HIEN</h3>
+          <p>Customer Support</p>
+        </div>
+        <div class="team-card" onclick="showModal('THE DUC', 'Technical Manager', 'THEDUC@short.com', '+1 234 567 892')">
+          <h3>THE DUC</h3>
+          <p>Technical Manager</p>
+        </div>
+        <div class="team-card" onclick="showModal('GIA NGUYEN', 'CONTROLLER', 'GT@short.com', '+1 234 567 893')">
+          <h3>GIA NGUYEN</h3>
+          <p>CONTROLLER</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div id="teamModal" class="modal">
+    <div class="modal-content">
+      <h3 id="modalName"></h3>
+      <p id="modalRole"></p>
+      <p id="modalEmail"></p>
+      <p id="modalPhone"></p>
+      <button class="close-btn" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    function showModal(name, role, email, phone) {
+      document.getElementById('modalName').innerText = name;
+      document.getElementById('modalRole').innerText = role;
+      document.getElementById('modalEmail').innerText = `Email: ${email}`;
+      document.getElementById('modalPhone').innerText = `Phone: ${phone}`;
+      document.getElementById('teamModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('teamModal').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

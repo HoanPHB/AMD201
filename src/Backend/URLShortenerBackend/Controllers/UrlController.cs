@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using URLShortenerBackend.Services;
+using Microsoft.Extensions.Logging;
 
 namespace URLShortenerBackend.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("url")]
     public class UrlController : ControllerBase
     {
         public class ShortenUrlRequest
@@ -14,72 +15,99 @@ namespace URLShortenerBackend.Controllers
         }
 
         private readonly UrlShortenerService _urlShortenerService;
+        private readonly ILogger<UrlController> _logger;
 
-        public UrlController(UrlShortenerService urlShortenerService)
+        public UrlController(UrlShortenerService urlShortenerService, ILogger<UrlController> logger)
         {
             _urlShortenerService = urlShortenerService;
+            _logger = logger;
         }
 
-        // POST /shorten
+        // POST /url/shorten
         [HttpPost("shorten")]
         public async Task<IActionResult> ShortenUrl([FromBody] ShortenUrlRequest request)
         {
+            if (string.IsNullOrWhiteSpace(request.OriginalUrl))
+            {
+                _logger.LogWarning("Original URL cannot be null or empty.");
+                return BadRequest(new { error = "Original URL cannot be empty." });
+            }
+
             try
             {
-                if (string.IsNullOrEmpty(request.OriginalUrl))
-                {
-                    return BadRequest(new { error = "Original URL cannot be empty." });
-                }
-
-                // Pass both the original URL and the optional expiration date
                 var shortCode = await _urlShortenerService.CreateShortUrlAsync(request.OriginalUrl, request.ExpiresAt);
                 var shortUrl = $"{Request.Scheme}://{Request.Host}/url/{shortCode}";
 
-                return Ok(shortUrl);
+                _logger.LogInformation($"Short URL created: {shortUrl}");
+                return Ok(new { shortUrl });
             }
             catch (Exception ex)
             {
-                return BadRequest(new { error = ex.Message });
+                _logger.LogError(ex, "Error occurred while creating a short URL.");
+                return StatusCode(500, new { error = "An error occurred while creating the short URL." });
             }
         }
 
-        // GET /{code}
+        // GET /url/{code}
         [HttpGet("{code}")]
-        public async Task<IActionResult> RedirectToOriginalUrl(string code)
+        public async Task<IActionResult> GetOriginalUrl(string code)
         {
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                _logger.LogWarning("Short code cannot be null or empty.");
+                return BadRequest(new { error = "Short code cannot be empty." });
+            }
+
             try
             {
                 var originalUrl = await _urlShortenerService.GetOriginalUrlAsync(code);
-                return Redirect(originalUrl);
+                if (originalUrl == null)
+                {
+                    _logger.LogWarning($"No URL found for short code: {code}");
+                    return NotFound(new { error = "No URL found for the given short code." });
+                }
+
+                _logger.LogInformation($"Retrieved original URL for short code {code}: {originalUrl}");
+                return Ok(new { originalUrl });
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, $"Error resolving short code: {code}");
                 if (ex.Message == "The shortened URL has expired.")
                 {
                     return BadRequest(new { error = "This URL has expired. Please create a new one." });
                 }
-                return NotFound(new { error = ex.Message });
+                return StatusCode(500, new { error = "An error occurred while retrieving the original URL." });
             }
         }
 
-        // GET /analytics/{code}
+        // GET /url/analytics/{code}
         [HttpGet("analytics/{code}")]
         public async Task<IActionResult> GetAnalytics(string code)
         {
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                _logger.LogWarning("Short code cannot be null or empty for analytics.");
+                return BadRequest(new { error = "Short code cannot be empty." });
+            }
+
             try
             {
                 var analytics = await _urlShortenerService.GetAnalyticsAsync(code);
 
                 if (analytics == null)
                 {
+                    _logger.LogWarning($"No analytics found for short code: {code}");
                     return NotFound(new { error = "No analytics found for the given short code." });
                 }
 
+                _logger.LogInformation($"Retrieved analytics for short code: {code}");
                 return Ok(analytics);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { error = ex.Message });
+                _logger.LogError(ex, "Error retrieving analytics.");
+                return StatusCode(500, new { error = "An error occurred while retrieving analytics." });
             }
         }
     }
