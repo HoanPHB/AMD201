@@ -50,7 +50,7 @@ namespace URLShortenerBackend.Controllers
 
         // GET /url/{code}
         [HttpGet("{code}")]
-        public async Task<IActionResult> GetOriginalUrl(string code)
+        public async Task<IActionResult> GetOriginalUrl(string code, [FromQuery] bool returnUrl = false)
         {
             if (string.IsNullOrWhiteSpace(code))
             {
@@ -67,8 +67,18 @@ namespace URLShortenerBackend.Controllers
                     return NotFound(new { error = "No URL found for the given short code." });
                 }
 
-                _logger.LogInformation($"Redirecting to original URL for short code {code}: {originalUrl}");
-                return Redirect(originalUrl); // Use Redirect to send a 302 response
+                _logger.LogInformation($"Processing short code {code}: {originalUrl}");
+
+                if (returnUrl)
+                {
+                    // Return the original URL in the response
+                    return Ok(new { originalUrl });
+                }
+                else
+                {
+                    // Redirect to the original URL
+                    return Redirect(originalUrl);
+                }
             }
             catch (Exception ex)
             {

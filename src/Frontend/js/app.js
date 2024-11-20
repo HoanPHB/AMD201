@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Make API request to retrieve original URL
             const shortCode = retrieveInput.split("/").pop(); // Extract short code from URL
-            fetch(`http://localhost:5003/url/${shortCode}`)
+            fetch(`http://localhost:5003/url/${shortCode}?returnUrl=true`) // Add returnUrl=true here
                 .then((response) => {
                     if (!response.ok) {
                         throw new Error("Shortened URL not found.");
@@ -99,5 +99,50 @@ document.addEventListener("DOMContentLoaded", function () {
         }).catch(err => {
             console.error("Failed to copy text: ", err);
         });
+    });
+
+    // Event listener for fetching analytics
+    document.getElementById("analyticsBtn").addEventListener("click", function () {
+        const analyticsInput = document.getElementById("analyticsInput").value.trim();
+        const analyticsContainer = document.getElementById("analyticsContainer");
+
+        if (analyticsInput) {
+            analyticsContainer.innerHTML = "Fetching analytics... Please wait.";
+
+            const shortCode = analyticsInput.split("/").pop(); // Extract short code from URL
+            fetch(`http://localhost:5003/url/analytics/${shortCode}`)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Analytics not found.");
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    if (data) {
+                        analyticsContainer.innerHTML = `
+                            <div class="analytics-box">
+                                <p><strong>Click Count:</strong> ${data.clickCount}</p>
+                            </div>
+                            <div class="analytics-box">
+                                <p><strong>Last Clicked At:</strong> ${data.lastClickedAt}</p>
+                            </div>
+                            <div class="analytics-box">
+                                <p><strong>Created At:</strong> ${data.createdAt}</p>
+                            </div>
+                            <div class="analytics-box">
+                                <p><strong>Expires At:</strong> ${data.expiresAt || 'Never'}</p>
+                            </div>
+                        `;
+                    } else {
+                        analyticsContainer.innerHTML = "Error: No analytics found for this short code.";
+                    }
+                })
+                .catch((err) => {
+                    analyticsContainer.innerHTML = "An error occurred. Please try again.";
+                    console.error(err);
+                });
+        } else {
+            alert("Please enter a valid shortened URL!");
+        }
     });
 });
