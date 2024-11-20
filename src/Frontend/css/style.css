@@ -1,0 +1,232 @@
+/* Global Reset for consistent styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    background-image: url('../assets/Screenshot 2024-11-20 014424.png'); /* Adjusted path */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #d1d1d1;
+    line-height: 1.6;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Header Styles */
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 0;
+    background-color: #111;
+    z-index: 1000;
+  }
+
+  .subtitle {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 2.2em;
+    background: linear-gradient(to right, pink, blue);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  .headline {
+    font-size: 2.2em;
+    text-align: center;
+    font-weight: bold;
+    background: linear-gradient(to right, pink, blue);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    margin-top: 60px;
+  }
+
+  /* Main Content Styles */
+  .main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .centered-input {
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+  }
+
+  .service-description {
+    font-size: 0.8em;
+    color: #d1d1d1;
+    margin-bottom: 30px;
+    margin-top: 0;
+  }
+
+  .input-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px; /* Add space between input sections */
+    margin-top: 50px;
+  }
+
+  .input-field {
+    flex-grow: 1;
+    padding: 15px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #333;
+    border: 2px solid #555;
+    border-radius: 25px;
+    outline: none;
+  }
+
+  .input-field::placeholder {
+    color: #bbb;
+  }
+
+  .action-btn {
+    padding: 12px 25px;
+    font-size: 16px;
+    width: 20%;
+    box-sizing: content-box;
+    background-color: #4a90e2;
+    border: 2px solid #555;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .action-btn:hover {
+    background-color: #357ab7;
+  }
+
+  .action-btn:focus, .action-btn:active {
+    background-color: #4a90e2;
+    outline: none;
+  }
+
+  .result-section {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px ;
+  }
+
+  #shortenedLink {
+    flex-grow: 1;
+    padding: 15px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #333;
+    border: 2px solid #555;
+    border-radius: 25px;
+    outline: none;
+  }
+
+  .copy-btn {
+    padding: 12px 25px;
+    font-size: 16px;
+    width: 20%;
+    box-sizing: content-box;
+    background-color: #4a90e2;
+    border: 2px solid #555;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .copy-btn:hover {
+    background-color: #357ab7;
+  }
+
+  .copy-btn:focus, .copy-btn:active {
+    background-color: #4a90e2;
+    outline: none;
+  }
+
+  /* Footer Styles */
+  .footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #111;
+  }
+
+  .contact-section {
+    margin: 20px 0;
+    text-align: center;
+  }
+
+  .contact-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+
+  .contact-btn:hover {
+    background-color: #45a049;
+  }
+
+  .footer-text {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+  }
+
+  /* Responsive Design for Mobile */
+  @media (max-width: 768px) {
+    .subtitle {
+        font-size: 2em;
+    }
+
+    .headline {
+        font-size: 1.5em;
+    }
+
+    .input-section {
+        flex-direction: column;
+    }
+
+    .input-field {
+        width: 100%;
+    }
+
+    .action-btn {
+        width: 100%;
+    }
+
+    .result-section input {
+        width: 100%;
+    }
+
+    .copy-btn {
+        width: 100%;
+    }
+  }
+    .analytics-box {
+        background-color: rgba(255, 255, 255, 0.1); /* Transparent background */
+        color: white; /* White text */
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 5px;
+    }
