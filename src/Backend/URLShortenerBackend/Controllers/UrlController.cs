@@ -71,13 +71,11 @@ namespace URLShortenerBackend.Controllers
 
                 if (returnUrl)
                 {
-                    // Return the original URL in the response without incrementing the click count
+
                     return Ok(new { originalUrl });
                 }
                 else
                 {
-                    // Increment the click count and redirect to the original URL
-                    await _urlShortenerService.IncrementClickAnalytics(code);
                     return Redirect(originalUrl);
                 }
             }
