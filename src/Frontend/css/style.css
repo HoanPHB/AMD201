@@ -88,15 +88,15 @@
     flex-grow: 1;
     padding: 15px;
     font-size: 16px;
-    color: #fff;
-    background-color: #333;
-    border: 2px solid #555;
+    color: #859dd1;
+    background-color: #1f2b44;
+    border: 2px solid #31436a;
     border-radius: 25px;
     outline: none;
   }
 
   .input-field::placeholder {
-    color: #bbb;
+    color: #859dd1;
   }
 
   .action-btn {
@@ -105,7 +105,7 @@
     width: 20%;
     box-sizing: content-box;
     background-color: #4a90e2;
-    border: 2px solid #555;
+    border: 2px solid #31436a;
     border-radius: 25px;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -132,9 +132,9 @@
     flex-grow: 1;
     padding: 15px;
     font-size: 16px;
-    color: #fff;
-    background-color: #333;
-    border: 2px solid #555;
+    color: #859dd1;
+    background-color: #1f2b44;
+    border: 2px solid #31436a;
     border-radius: 25px;
     outline: none;
   }
@@ -145,7 +145,7 @@
     width: 20%;
     box-sizing: content-box;
     background-color: #4a90e2;
-    border: 2px solid #555;
+    border: 2px solid #31436a;
     border-radius: 25px;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -173,21 +173,23 @@
   }
 
   .contact-btn {
-    background-color: #4CAF50;
+    background-color: #4a90e2;
     color: white;
-    border: none;
+    text-decoration: none;
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 55px;
+    transition: all 0.3s ease;
   }
 
   .contact-btn:hover {
-    background-color: #45a049;
+    background-color: #357ab7;
+    box-shadow: 0 0 0 6px #1f2b44;
   }
 
   .footer-text {
-    margin-top: 10px;
+    margin-top: 25px;
     font-size: 14px;
     color: #555;
   }
