@@ -119,18 +119,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
                 .then((data) => {
                     if (data) {
+                        // Convert UTC times to the user's local time
+                        const lastClickedAtLocal = data.lastClickedAt ? new Date(data.lastClickedAt).toLocaleString() : 'Never';
+                        const createdAtLocal = new Date(data.createdAt).toLocaleString();
+                        const expiresAtLocal = data.expiresAt ? new Date(data.expiresAt).toLocaleString() : 'Never';
+
                         analyticsContainer.innerHTML = `
                             <div class="analytics-box">
                                 <p><strong>Click Count:</strong> ${data.clickCount}</p>
                             </div>
                             <div class="analytics-box">
-                                <p><strong>Last Clicked At:</strong> ${data.lastClickedAt}</p>
+                                <p><strong>Last Clicked At:</strong> ${lastClickedAtLocal}</p>
                             </div>
                             <div class="analytics-box">
-                                <p><strong>Created At:</strong> ${data.createdAt}</p>
+                                <p><strong>Created At:</strong> ${createdAtLocal}</p>
                             </div>
                             <div class="analytics-box">
-                                <p><strong>Expires At:</strong> ${data.expiresAt || 'Never'}</p>
+                                <p><strong>Expires At:</strong> ${expiresAtLocal}</p>
                             </div>
                         `;
                     } else {

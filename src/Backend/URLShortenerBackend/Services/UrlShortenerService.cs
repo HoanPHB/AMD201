@@ -133,7 +133,7 @@ namespace URLShortenerBackend.Services
         }
 
         // Utility to increment click analytics
-        private async Task IncrementClickAnalytics(string shortCode)
+        public async Task IncrementClickAnalytics(string shortCode)
         {
             var shortUrl = await _dbContext.ShortUrls.FirstOrDefaultAsync(u => u.ShortCode == shortCode);
             if (shortUrl != null)

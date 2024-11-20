@@ -50,7 +50,7 @@ namespace URLShortenerBackend.Controllers
 
         // GET /url/{code}
         [HttpGet("{code}")]
-        public async Task<IActionResult> GetOriginalUrl(string code, [FromQuery] bool returnUrl = false)
+        public async Task<IActionResult> GetOriginalUrl(string code, bool returnUrl = false)
         {
             if (string.IsNullOrWhiteSpace(code))
             {
@@ -71,12 +71,13 @@ namespace URLShortenerBackend.Controllers
 
                 if (returnUrl)
                 {
-                    // Return the original URL in the response
+                    // Return the original URL in the response without incrementing the click count
                     return Ok(new { originalUrl });
                 }
                 else
                 {
-                    // Redirect to the original URL
+                    // Increment the click count and redirect to the original URL
+                    await _urlShortenerService.IncrementClickAnalytics(code);
                     return Redirect(originalUrl);
                 }
             }
@@ -87,7 +88,7 @@ namespace URLShortenerBackend.Controllers
                 {
                     return BadRequest(new { error = "This URL has expired. Please create a new one." });
                 }
-                return StatusCode(500, new { error = "An error occurred while retrieving the original URL." });
+                return StatusCode(500, new { error = "An error occurred while processing the request." });
             }
         }
 
