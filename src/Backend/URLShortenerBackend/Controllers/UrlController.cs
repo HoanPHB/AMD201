@@ -67,8 +67,8 @@ namespace URLShortenerBackend.Controllers
                     return NotFound(new { error = "No URL found for the given short code." });
                 }
 
-                _logger.LogInformation($"Retrieved original URL for short code {code}: {originalUrl}");
-                return Ok(new { originalUrl });
+                _logger.LogInformation($"Redirecting to original URL for short code {code}: {originalUrl}");
+                return Redirect(originalUrl); // Use Redirect to send a 302 response
             }
             catch (Exception ex)
             {
