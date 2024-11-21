@@ -26,7 +26,7 @@ builder.Services.AddCors(options =>
 });
 
 // Build the application
-var app = builder.Build();
+var app = builder.Build(); 
 
 app.UseCors("AllowLocalhost");
 

@@ -10,7 +10,7 @@ namespace URLShortenerBackend.Controllers
     {
         public class ShortenUrlRequest
         {
-            public string OriginalUrl { get; set; }
+            public required string OriginalUrl { get; set; }
             public DateTime? ExpiresAt { get; set; } // Optional expiration date
         }
 
